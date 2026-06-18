@@ -68,7 +68,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setState((prev) => ({ ...prev, loading: true }));
 
       const provider = new BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
+      
+      // Use a timeout to prevent hanging if MetaMask crashes or doesn't respond
+      const signerPromise = provider.getSigner();
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error('MetaMask is not responding. Please check your extension popup, or try restarting your browser/extension.')), 10000);
+      });
+      
+      const signer = await Promise.race([signerPromise, timeoutPromise]);
       const wallet = await signer.getAddress();
 
       // Get nonce from server
