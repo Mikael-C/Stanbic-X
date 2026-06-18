@@ -104,14 +104,14 @@ export const balanceApi = {
     };
   },
 
-  deposit: (amount: number, stablecoin: string, committedPercent: number) =>
+  deposit: (amount: number, stablecoin: string, committedPercentage: number) =>
     request<{ txHash: string }>(`/balance/deposit`, {
       method: 'POST',
-      body: { amount, stablecoin, committedPercent },
+      body: { amount, stablecoin, committedPercentage },
     }),
 
   withdraw: (amount: number, source: string) =>
-    request<{ youReceive: number; txHash: string }>(`/balance/withdraw`, {
+    request<{ netReceived: number; amountWithdrawn: number; transactionHash: string }>(`/balance/withdraw`, {
       method: 'POST',
       body: { amount, source },
     }),

@@ -28,7 +28,7 @@ export default function Dashboard() {
   // Deposit form
   const [depositAmount, setDepositAmount] = useState('');
   const [depositCoin, setDepositCoin] = useState('USDC');
-  const [committedPct, setCommittedPct] = useState(60);
+  const [committedPct, setCommittedPct] = useState(70);
   const [depositLoading, setDepositLoading] = useState(false);
 
   // Withdraw form
@@ -76,7 +76,7 @@ export default function Dashboard() {
     setWithdrawLoading(true);
     try {
       const result = await balanceApi.withdraw(parseFloat(withdrawAmount), withdrawSource);
-      showToast(`You will receive ${formatUSD(result.youReceive)}`, 'success');
+      showToast(`Withdrawal successful! You will receive ${formatUSD(result.netReceived)}`, 'success');
       setShowWithdraw(false);
       setWithdrawAmount('');
       loadData();
