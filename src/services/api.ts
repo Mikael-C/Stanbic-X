@@ -181,7 +181,7 @@ export const marketsApi = {
     }),
 
   claimPayout: (marketId: string) =>
-    request<{ payout: number }>(`/markets/${encodeURIComponent(marketId)}/claim`, { method: 'POST' }),
+    request<{ payout: number }>(`/markets/${encodeURIComponent(marketId)}/payout/claim`, { method: 'POST' }),
 
   getPositions: (marketId: string) =>
     request<Position[]>(`/markets/${encodeURIComponent(marketId)}/positions`),
