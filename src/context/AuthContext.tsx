@@ -144,7 +144,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const verifyTotp = useCallback(async (code: string): Promise<boolean> => {
     try {
-      const result = await authApi.verifyTotp(code);
+      if (!state.wallet) return false;
+      const result = await authApi.verifyTotp(code, state.wallet);
       if (result.verified) {
         localStorage.setItem('sx_token', result.jwt);
         const profile = await authApi.getProfile();
@@ -162,7 +163,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       return false;
     }
-  }, []);
+  }, [state.wallet]);
 
   const setupTotp = useCallback(async () => {
     const result = await authApi.setupTotp();

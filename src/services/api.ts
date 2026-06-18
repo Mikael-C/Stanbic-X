@@ -67,8 +67,8 @@ export const authApi = {
       `/auth/login`, { method: 'POST', body: { wallet, signature } }
     ),
 
-  verifyTotp: (token: string) =>
-    request<{ verified: boolean; jwt: string }>(`/auth/totp/verify`, { method: 'POST', body: { token } }),
+  verifyTotp: (token: string, walletAddress: string) =>
+    request<{ verified: boolean; jwt: string }>(`/auth/totp/verify`, { method: 'POST', body: { token, walletAddress } }),
 
   setupTotp: () =>
     request<{ secret: string; qrCode: string }>(`/auth/totp/setup`, { method: 'POST' }),
