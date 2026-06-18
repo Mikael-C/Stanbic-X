@@ -177,7 +177,7 @@ export const marketsApi = {
   resolve: (marketId: string, winner: 'yes' | 'no') =>
     request<{ resolved: boolean }>(`/markets/${encodeURIComponent(marketId)}/resolve`, {
       method: 'POST',
-      body: { winner },
+      body: { winner: winner === 'yes' ? 'Yes' : 'No' },
     }),
 
   claimPayout: (marketId: string) =>
