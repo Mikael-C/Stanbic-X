@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { API_URL } from '../services/api';
 
 interface WebSocketEvents {
   onMarketUpdate?: (data: unknown) => void;
@@ -17,7 +18,7 @@ export function useWebSocket(events?: WebSocketEvents) {
   useEffect(() => {
     const token = localStorage.getItem('sx_token');
 
-    const socket = io(window.location.origin, {
+    const socket = io(API_URL, {
       path: '/socket.io',
       auth: token ? { token } : undefined,
       transports: ['websocket', 'polling'],

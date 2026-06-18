@@ -42,9 +42,9 @@ const NETWORKS: Record<string, NetworkConfig> = {
     rpcUrl: 'https://sepolia.base.org',
     explorer: 'https://sepolia.basescan.org',
     contracts: {
-      predictionMarket: '0x0000000000000000000000000000000000000001',
-      treasury: '0x0000000000000000000000000000000000000002',
-      usdc: '0x0000000000000000000000000000000000000003',
+      predictionMarket: '0x9c7459fcA19B34f2ff8224334E93DFf851c95396',
+      treasury: '0xF9E131053e2bFaF2FD1df3F777f029c70a73bDEC',
+      usdc: '0x0175930Ad3F5009dE2841071fA23d54F6509944c',
     },
   },
 };

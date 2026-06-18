@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+export const API_URL = import.meta.env.VITE_API_URL || 'https://stanbic-x-backend.onrender.com';
+const API_BASE = `${API_URL}/api`;
 
 interface ApiOptions {
   method?: string;
