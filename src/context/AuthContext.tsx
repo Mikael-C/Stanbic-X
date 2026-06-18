@@ -145,22 +145,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const verifyTotp = useCallback(async (code: string): Promise<boolean> => {
     try {
       if (!state.wallet) return false;
-      const result = await authApi.verifyTotp(code, state.wallet);
+      const result = await authApi.verifyTotp(code, state.wallet) as any;
+      console.log('TOTP verify response:', JSON.stringify(result));
+      
       if (result.verified) {
-        localStorage.setItem('sx_token', result.jwt);
-        const profile = await authApi.getProfile();
+        // Backend may return jwt field or token field depending on version
+        const jwtToken = result.jwt || result.token;
+        if (!jwtToken) {
+          console.error('TOTP verified but no JWT received:', result);
+          return false;
+        }
+        localStorage.setItem('sx_token', jwtToken);
+        
+        // Try to get profile for admin status, but don't fail login if it errors
+        let isAdmin = false;
+        try {
+          const profile = await authApi.getProfile();
+          isAdmin = profile.role === 'admin';
+        } catch (profileErr) {
+          console.warn('Profile fetch failed after TOTP verify, continuing login:', profileErr);
+        }
+        
         setState((prev) => ({
           ...prev,
-          token: result.jwt,
+          token: jwtToken,
           isAuthenticated: true,
-          isAdmin: profile.role === 'admin',
+          isAdmin,
           totpVerified: true,
           totpSetup: null,
         }));
         return true;
       }
       return false;
-    } catch {
+    } catch (err) {
+      console.error('TOTP verification error:', err);
       return false;
     }
   }, [state.wallet]);
