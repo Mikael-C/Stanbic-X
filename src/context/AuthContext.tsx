@@ -112,12 +112,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         // No TOTP required - direct login
         localStorage.setItem('sx_token', loginResult.token);
+        
+        // Fetch profile to determine admin status
+        let isAdmin = false;
+        try {
+          const profile = await authApi.getProfile();
+          isAdmin = profile.role === 'admin';
+        } catch {
+          // Profile fetch failed, continue without admin
+        }
+        
         setState((prev) => ({
           ...prev,
           wallet,
           signer,
           token: loginResult.token,
           isAuthenticated: true,
+          isAdmin,
           totpVerified: true,
           loading: false,
         }));
