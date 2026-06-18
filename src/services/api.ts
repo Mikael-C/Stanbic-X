@@ -206,8 +206,13 @@ export const leaderboardApi = {
     }));
   },
 
-  getRewardPool: () =>
-    request<{ totalPool: number; nextDistribution: string }>(`/leaderboard/rewards`),
+  getRewardPool: async () => {
+    const data = await request<any>(`/leaderboard/rewards`);
+    return {
+      totalPool: data.poolBalance ?? data.totalPool ?? 0,
+      nextDistribution: data.updatedAt || data.nextDistribution || '',
+    };
+  },
 
   claimReward: () =>
     request<{ amount: number }>(`/leaderboard/claim`, { method: 'POST' }),
